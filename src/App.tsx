@@ -140,7 +140,8 @@ function App() {
         >
           <div className="absolute inset-0 -z-10">
             <HeroNetwork />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,14,20,0.1),#0b0e14_90%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_65%_at_28%_48%,rgba(11,14,20,0.85)_0%,rgba(11,14,20,0.4)_60%,transparent_100%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,14,20,0.1),#0b0e14_90%)] pointer-events-none" />
           </div>
 
           <div className="mx-auto grid w-full max-w-6xl items-end gap-8 py-6 sm:py-10 lg:grid-cols-[1fr_auto]">
