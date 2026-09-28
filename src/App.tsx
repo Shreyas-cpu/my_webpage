@@ -8,6 +8,7 @@ import { ProjectCard } from './components/ProjectCard'
 import { SectionDivider } from './components/SectionDivider'
 import { SectionShell } from './components/SectionShell'
 import { SignalLink } from './components/SignalLink'
+import { SplineMatrix } from './components/SplineMatrix'
 import { compactProjects, featuredProjects } from './content/projects'
 import {
   experience,
@@ -310,6 +311,10 @@ function App() {
             ))}
           </div>
         </SectionShell>
+
+        {/* ─────────────── INTERACTIVE 3D BUFFER ─────────────── */}
+        <SectionDivider />
+        <SplineMatrix />
 
         {/* ─────────────── SKILLS ─────────────── */}
         <SectionDivider />
