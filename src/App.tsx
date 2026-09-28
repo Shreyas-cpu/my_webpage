@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { ContactForm } from './components/ContactForm'
 import { CustomCursor } from './components/CustomCursor'
 import { HeroNetwork } from './components/HeroNetwork'
@@ -31,6 +31,21 @@ function App() {
   useScrollReveal(heroRef)
   useScrollReveal(footerRef)
 
+  // Scroll Progress Beam Hook
+  useEffect(() => {
+    const beam = document.getElementById('scroll-progress-beam')
+    const updateProgress = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight
+      if (totalHeight > 0 && beam) {
+        const progress = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100))
+        beam.style.width = `${progress}%`
+      }
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    updateProgress()
+    return () => window.removeEventListener('scroll', updateProgress)
+  }, [])
+
   /** Smooth-scroll to anchor via Lenis when available */
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -50,6 +65,9 @@ function App() {
 
   return (
     <>
+      {/* Scroll Progress Optical Beam */}
+      <div id="scroll-progress-beam" aria-hidden="true" />
+
       <CustomCursor />
       <Preloader />
 
@@ -58,29 +76,31 @@ function App() {
         Skip to main content
       </a>
 
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-line/80 bg-ink/85 px-4 py-3 backdrop-blur sm:px-8">
+      {/* Floating Header */}
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-line/80 bg-ink/90 px-4 py-3.5 backdrop-blur-md sm:px-8">
         <nav
           aria-label="Primary navigation"
           className="mx-auto flex max-w-6xl items-center justify-between gap-5"
         >
           <a
-            className="font-display text-lg font-semibold text-paper"
+            className="font-display text-lg font-bold tracking-tight text-paper transition hover:text-signal"
             data-magnetic
             href="#hero"
             onClick={(e) => handleNavClick(e, '#hero')}
           >
+            <span className="text-signal mr-1.5">//</span>
             {profileFacts.initials}
           </a>
 
           {/* Desktop nav links */}
-          <div className="hidden items-center gap-5 font-mono text-xs uppercase tracking-normal text-muted md:flex">
+          <div className="hidden items-center gap-6 font-mono text-xs uppercase tracking-wider text-muted md:flex">
             {navItems.map((item) => (
               <a
                 className={[
-                  'relative transition',
+                  'relative transition-colors duration-200',
                   `#${activeSection}` === item.href
-                    ? 'text-signal'
-                    : 'hover:text-signal',
+                    ? 'text-signal font-medium'
+                    : 'hover:text-paper',
                 ].join(' ')}
                 data-magnetic
                 href={item.href}
@@ -90,7 +110,7 @@ function App() {
                 {item.label}
                 {/* Active indicator dot */}
                 {`#${activeSection}` === item.href && (
-                  <span className="absolute -bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-signal" />
+                  <span className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-signal shadow-[0_0_6px_#ff8a3d]" />
                 )}
               </a>
             ))}
@@ -98,11 +118,11 @@ function App() {
 
           <div className="flex items-center gap-3">
             <a
-              className="border border-signal px-3 py-2 font-mono text-xs uppercase tracking-normal text-signal transition hover:bg-signal hover:text-ink"
+              className="border border-signal/80 bg-signal-soft px-3.5 py-1.5 font-mono text-xs uppercase tracking-wide text-signal transition-all duration-200 hover:bg-signal hover:text-ink hover:shadow-[0_0_12px_rgba(255,138,61,0.4)]"
               data-magnetic
               href={profileFacts.resumePath}
             >
-              Resume
+              Resume ↗
             </a>
             <MobileNav activeSection={activeSection} />
           </div>
@@ -112,38 +132,46 @@ function App() {
       <main className="text-paper" id="main-content">
         {/* ──────────────────────────── HERO ──────────────────────────── */}
         <section
-          className="relative isolate min-h-screen overflow-hidden px-6 pb-16 pt-28 sm:px-10 lg:px-16"
+          className="relative isolate min-h-screen overflow-hidden px-6 pb-20 pt-32 sm:px-10 lg:px-16"
           id="hero"
           ref={heroRef}
         >
           <div className="absolute inset-0 -z-10">
             <HeroNetwork />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,14,20,0.1),#0b0e14_88%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,14,20,0.1),#0b0e14_90%)]" />
           </div>
 
-          <div className="mx-auto flex min-h-[calc(100vh-7rem)] max-w-6xl flex-col justify-end">
-            <p
-              className="font-mono text-sm uppercase tracking-normal text-signal"
-              data-reveal
-            >
-              LLM – MCP – RAG – Agentic-AI
-            </p>
+          <div className="mx-auto flex min-h-[calc(100vh-8.5rem)] max-w-6xl flex-col justify-end">
+            {/* Live System Signal Badge */}
+            <div className="flex items-center gap-2" data-reveal>
+              <div className="inline-flex items-center gap-2 rounded-full border border-signal/30 bg-ink-soft/90 px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-wider text-signal shadow-[0_0_15px_rgba(255,138,61,0.1)]">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+                </span>
+                MCP System Architecture • SAP ERP Gateway • Enterprise AI
+              </div>
+            </div>
+
             <h1
-              className="mt-5 max-w-5xl font-display text-5xl font-semibold leading-[0.94] text-paper sm:text-7xl lg:text-8xl"
+              className="mt-6 max-w-5xl font-display text-5xl font-bold leading-[0.92] tracking-tight text-paper sm:text-7xl lg:text-8xl"
               data-reveal
             >
               {profileFacts.displayName}
             </h1>
+
             <p
-              className="mt-6 max-w-2xl font-display text-2xl leading-tight text-paper sm:text-3xl"
+              className="mt-6 max-w-2xl font-display text-2xl font-semibold leading-snug text-paper sm:text-3xl"
               data-reveal
             >
               {profileFacts.role}
             </p>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-muted" data-reveal>
+
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-muted/90" data-reveal>
               {profileFacts.positioning}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3" data-reveal>
+
+            <div className="mt-9 flex flex-wrap items-center gap-3.5" data-reveal>
               <SignalLink
                 href="#projects"
                 variant="primary"
@@ -151,16 +179,18 @@ function App() {
                   handleNavClick(e, '#projects')
                 }
               >
-                View Work
+                Explore Projects ↓
               </SignalLink>
-              <SignalLink href={profileFacts.resumePath}>Resume</SignalLink>
+              <SignalLink href={profileFacts.resumePath}>
+                Download CV ↗
+              </SignalLink>
               <SignalLink
                 href="#contact"
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
                   handleNavClick(e, '#contact')
                 }
               >
-                Contact
+                Contact Me
               </SignalLink>
             </div>
           </div>
@@ -168,19 +198,21 @@ function App() {
 
         {/* ─────────────── ABOUT ─────────────── */}
         <SectionDivider />
-        <SectionShell eyebrow="01 / Context" id="about" title="The bridge layer">
-          <p className="max-w-3xl text-xl leading-9 text-muted">{profileFacts.about}</p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-3" data-reveal-stagger>
-            {['MCP architecture', 'Enterprise AI', 'Indian-context systems'].map(
-              (item) => (
-                <div className="border border-line bg-ink-soft p-4" data-reveal key={item}>
-                  <p className="font-mono text-xs uppercase tracking-normal text-signal">
-                    Focus
-                  </p>
-                  <p className="mt-2 text-paper">{item}</p>
-                </div>
-              ),
-            )}
+        <SectionShell eyebrow="01 / Context" id="about" title="The Integration Layer">
+          <p className="max-w-3xl text-xl leading-9 text-muted/95">{profileFacts.about}</p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3" data-reveal-stagger>
+            {[
+              { label: 'Domain Core', val: 'Model Context Protocol (MCP) & Enterprise Multi-Agent Systems' },
+              { label: 'Production Impact', val: 'Active SAP BTP & OData Gateway in daily operations' },
+              { label: 'Applied AI', val: 'Emergency 108 Dispatch & Indic Logistics OCR Solutions' },
+            ].map((item) => (
+              <div className="cyber-glow-border border border-line bg-ink-soft/80 p-5 backdrop-blur" data-reveal key={item.label}>
+                <p className="font-mono text-xs uppercase tracking-wider text-signal">
+                  {item.label}
+                </p>
+                <p className="mt-2 text-base leading-snug text-paper">{item.val}</p>
+              </div>
+            ))}
           </div>
         </SectionShell>
 
@@ -189,49 +221,55 @@ function App() {
         <SectionShell
           eyebrow="02 / Experience"
           id="experience"
-          title="Enterprise systems in production"
+          title="Enterprise Systems in Production"
         >
-          {experience.map((item) => (
-            <article className="border border-line bg-ink-soft p-6" key={item.company}>
-              <div className="flex flex-wrap justify-between gap-4">
-                <div>
-                  <h3 className="font-display text-3xl font-semibold text-paper">
-                    {item.company}
-                  </h3>
-                  <p className="mt-2 text-muted">{item.role}</p>
+          <div className="space-y-6">
+            {experience.map((item) => (
+              <article
+                className="cyber-glow-border border border-line bg-ink-soft/90 p-7 backdrop-blur transition-all duration-300 hover:border-signal/70"
+                key={item.company}
+              >
+                <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line/60 pb-4">
+                  <div>
+                    <h3 className="font-display text-2xl font-bold text-paper sm:text-3xl">
+                      {item.company}
+                    </h3>
+                    <p className="mt-1 font-body text-base text-signal">{item.role}</p>
+                  </div>
+                  <span className="border border-line bg-ink px-3 py-1 font-mono text-xs uppercase tracking-wider text-muted">
+                    {item.dates}
+                  </span>
                 </div>
-                <p className="font-mono text-xs uppercase tracking-normal text-signal">
-                  {item.dates}
-                </p>
-              </div>
-              <ul className="mt-6 space-y-3 text-base leading-7 text-muted">
-                {item.points.map((point) => (
-                  <li className="flex gap-3" key={point}>
-                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+                <ul className="mt-5 space-y-3 font-body text-base leading-7 text-muted">
+                  {item.points.map((point) => (
+                    <li className="flex items-start gap-3" key={point}>
+                      <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-signal shadow-[0_0_6px_#ff8a3d]" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
         </SectionShell>
 
         {/* ─────────────── PROJECTS ─────────────── */}
         <SectionDivider />
-        <SectionShell eyebrow="03 / Work" id="projects" title="Routing as product logic">
-          <div className="grid gap-5">
+        <SectionShell eyebrow="03 / Projects" id="projects" title="Routing as Product Logic">
+          <div className="grid gap-6">
             {featuredProjects.map((project) => (
               <ProjectCard key={project.title} project={project} />
             ))}
           </div>
-          <div className="mt-8 border border-line p-5">
-            <p className="font-mono text-xs uppercase tracking-normal text-signal">
-              Compact archive
+
+          <div className="mt-10 border border-line bg-ink-soft/60 p-6 backdrop-blur">
+            <p className="font-mono text-xs uppercase tracking-widest text-signal">
+              Additional Research & Prototypes
             </p>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-2.5">
               {compactProjects.map((project) => (
                 <span
-                  className="border border-line px-3 py-2 text-sm text-muted transition hover:border-signal hover:text-paper"
+                  className="border border-line bg-ink px-3.5 py-2 font-mono text-xs text-muted transition-all duration-200 hover:border-signal hover:text-paper"
                   key={project}
                 >
                   {project}
@@ -244,17 +282,25 @@ function App() {
         {/* ─────────────── LEADERSHIP ─────────────── */}
         <SectionDivider />
         <SectionShell
-          eyebrow="04 / Community"
+          eyebrow="04 / Leadership"
           id="leadership"
-          title="Teams and developer communities"
+          title="Community Leadership & Technical Impact"
         >
-          <div className="grid gap-4 sm:grid-cols-3" data-reveal-stagger>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger>
             {leadership.map((item) => (
-              <article className="border border-line bg-ink-soft p-5" data-reveal key={item.title}>
-                <h3 className="font-display text-2xl font-semibold text-paper">
+              <article
+                className="cyber-glow-border border border-line bg-ink-soft/90 p-5 backdrop-blur transition-all duration-300 hover:border-signal/60"
+                data-reveal
+                key={item.title}
+              >
+                <p className="font-mono text-[10px] uppercase tracking-wider text-signal">
+                  {item.dates}
+                </p>
+                <h3 className="mt-2 font-display text-xl font-bold leading-tight text-paper">
                   {item.title}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-muted">{item.detail}</p>
+                <p className="mt-1 text-xs text-muted font-medium">{item.role}</p>
+                <p className="mt-4 text-sm leading-6 text-muted/90">{item.detail}</p>
               </article>
             ))}
           </div>
@@ -262,17 +308,21 @@ function App() {
 
         {/* ─────────────── SKILLS ─────────────── */}
         <SectionDivider />
-        <SectionShell eyebrow="05 / Skills" id="skills" title="Technical signal map">
-          <div className="grid gap-4 sm:grid-cols-2" data-reveal-stagger>
+        <SectionShell eyebrow="05 / Capabilities" id="skills" title="Technical Signal Matrix">
+          <div className="grid gap-5 sm:grid-cols-2" data-reveal-stagger>
             {skills.map((cluster) => (
-              <article className="border border-line bg-ink-soft p-5" data-reveal key={cluster.group}>
-                <h3 className="font-display text-2xl font-semibold text-paper">
+              <article
+                className="cyber-glow-border border border-line bg-ink-soft/90 p-6 backdrop-blur transition-all duration-300 hover:border-signal/60"
+                data-reveal
+                key={cluster.group}
+              >
+                <h3 className="font-display text-2xl font-bold text-paper">
                   {cluster.group}
                 </h3>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {cluster.items.map((skill) => (
                     <span
-                      className="bg-signal-soft px-3 py-1 font-mono text-[11px] uppercase tracking-normal text-signal"
+                      className="border border-line bg-ink px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-muted transition-colors duration-200 hover:border-signal hover:text-signal"
                       key={skill}
                     >
                       {skill}
@@ -286,24 +336,37 @@ function App() {
 
         {/* ─────────────── EDUCATION ─────────────── */}
         <SectionDivider />
-        <SectionShell eyebrow="06 / Education" id="education" title="Academic base">
-          <article className="border border-line bg-ink-soft p-6">
-            <h3 className="font-display text-3xl font-semibold text-paper">
-              {profileFacts.education.institution}
-            </h3>
-            <p className="mt-3 text-muted">{profileFacts.education.degree}</p>
-            <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+        <SectionShell eyebrow="06 / Education" id="education" title="Academic Foundation">
+          <article className="cyber-glow-border border border-line bg-ink-soft/90 p-7 backdrop-blur">
+            <div className="flex flex-wrap items-baseline justify-between gap-4 border-b border-line/60 pb-4">
               <div>
-                <dt className="font-mono text-xs uppercase tracking-normal text-signal">
-                  Dates
-                </dt>
-                <dd className="mt-2 text-paper">{profileFacts.education.dates}</dd>
+                <h3 className="font-display text-2xl font-bold text-paper sm:text-3xl">
+                  {profileFacts.education.institution}
+                </h3>
+                <p className="mt-1 text-base text-signal font-medium">
+                  {profileFacts.education.degree}
+                </p>
               </div>
-              <div>
-                <dt className="font-mono text-xs uppercase tracking-normal text-signal">
-                  CGPA / Score
+              <span className="border border-line bg-ink px-3 py-1 font-mono text-xs uppercase tracking-wider text-signal">
+                {profileFacts.education.dates}
+              </span>
+            </div>
+            <dl className="mt-6 grid gap-6 sm:grid-cols-2">
+              <div className="border border-line/60 bg-ink/70 p-4">
+                <dt className="font-mono text-xs uppercase tracking-wider text-muted">
+                  Degree & Major
                 </dt>
-                <dd className="mt-2 text-paper">{profileFacts.education.cgpa}</dd>
+                <dd className="mt-1.5 font-display text-lg font-semibold text-paper">
+                  {profileFacts.education.degree}
+                </dd>
+              </div>
+              <div className="border border-line/60 bg-ink/70 p-4">
+                <dt className="font-mono text-xs uppercase tracking-wider text-muted">
+                  Cumulative GPA
+                </dt>
+                <dd className="mt-1.5 font-display text-lg font-bold text-signal">
+                  {profileFacts.education.cgpa}
+                </dd>
               </div>
             </dl>
           </article>
@@ -312,29 +375,33 @@ function App() {
         {/* ─────────────── CONTACT ME ─────────────── */}
         <SectionDivider />
         <section
-          className="px-6 py-16 sm:px-10 lg:px-16"
+          className="px-6 py-20 sm:px-10 lg:px-16"
           id="contact"
           ref={footerRef}
         >
-          <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.5fr_0.5fr] items-center">
+          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.52fr_0.48fr] items-center">
             <div>
               <p
-                className="font-mono text-xs uppercase tracking-normal text-signal"
+                className="font-mono text-xs uppercase tracking-widest text-signal"
                 data-reveal
               >
-                Contact Me
+                Initiate Connection
               </p>
               <h2
-                className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-tight text-paper sm:text-5xl"
+                className="mt-4 max-w-3xl font-display text-4xl font-bold leading-tight text-paper sm:text-5xl"
                 data-reveal
               >
-                Keep the signal moving between models and the systems that matter.
+                Bridging intelligence to the systems that run the real world.
               </h2>
+              <p className="mt-4 text-base leading-7 text-muted" data-reveal>
+                Open for high-impact AI systems engineering, Model Context Protocol integration, and multi-agent infrastructure roles.
+              </p>
+
               <div className="mt-8 flex flex-wrap gap-3" data-reveal>
-                <SignalLink href={profileFacts.contact.github}>GitHub</SignalLink>
-                <SignalLink href={profileFacts.contact.linkedin}>LinkedIn</SignalLink>
+                <SignalLink href={profileFacts.contact.github}>GitHub ↗</SignalLink>
+                <SignalLink href={profileFacts.contact.linkedin}>LinkedIn ↗</SignalLink>
                 <SignalLink href={`mailto:${profileFacts.contact.email}`}>
-                  Email
+                  Email Me ↗
                 </SignalLink>
               </div>
             </div>

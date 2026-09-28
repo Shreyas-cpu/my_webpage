@@ -30,15 +30,56 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* ----------------------------------------------------------------
+     Standardized Motion Tokens (Rich Tabor standard)
+     ---------------------------------------------------------------- */
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 240ms;
+  --dur-4: 300ms;
+  --dur-5: 500ms;
+  --dur-illustrative: 800ms;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 50% 0%, rgb(255 138 61 / 8%), transparent 36rem),
-    var(--color-ink);
+  background-color: var(--color-ink);
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgb(255 138 61 / 12%), transparent 42rem),
+    radial-gradient(circle at 100% 60%, rgb(255 138 61 / 5%), transparent 32rem),
+    linear-gradient(to right, rgba(38, 49, 66, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(38, 49, 66, 0.12) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+  background-attachment: fixed;
+}
+
+/* ----------------------------------------------------------------
+   Scroll Progress Indicator Beam
+   ---------------------------------------------------------------- */
+#scroll-progress-beam {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: linear-gradient(90deg, #ff8a3d, #ffb380, #ff8a3d);
+  box-shadow: 0 0 10px rgba(255, 138, 61, 0.8), 0 0 20px rgba(255, 138, 61, 0.4);
+  z-index: 100;
+  transition: width 60ms linear;
+  pointer-events: none;
 }
 
 /* ----------------------------------------------------------------
@@ -62,7 +103,7 @@ html.lenis body {
 }
 
 /* ----------------------------------------------------------------
-   Custom cursor — hide native on desktop
+   Custom Cursor Styling
    ---------------------------------------------------------------- */
 @media (pointer: fine) {
   html.custom-cursor-active,
@@ -102,7 +143,7 @@ a {
   letter-spacing: 0.04em;
   text-decoration: none;
   border-radius: 0;
-  transition: top 0.15s ease;
+  transition: top var(--dur-2) var(--ease-out-quart);
 }
 
 .skip-link:focus {
@@ -115,33 +156,50 @@ a {
 }
 
 /* ----------------------------------------------------------------
-   Animations
+   3D Tilt & Glare Card Foundations
    ---------------------------------------------------------------- */
-@keyframes signal-load {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(200%);
-  }
+.card-perspective-container {
+  perspective: 1200px;
 }
 
-/* Section divider signal dot animation */
+.card-tilt-inner {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform var(--dur-3) var(--ease-out-quart);
+}
+
+.card-glare {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 138, 61, 0.14) 0%,
+    rgba(255, 138, 61, 0.04) 30%,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out-cubic);
+}
+
+.card-tilt-inner:hover .card-glare {
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------------
+   Animations & Signal Lines
+   ---------------------------------------------------------------- */
 @keyframes signal-travel {
   0% {
     left: 0%;
     opacity: 0;
   }
-
-  8% {
+  10% {
     opacity: 1;
   }
-
-  92% {
+  90% {
     opacity: 1;
   }
-
   100% {
     left: 100%;
     opacity: 0;
@@ -149,11 +207,32 @@ a {
 }
 
 .signal-divider-dot {
-  animation: signal-travel 3.5s ease-in-out infinite;
+  animation: signal-travel 3.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* Glowing cyber borders */
+.cyber-glow-border {
+  position: relative;
+}
+
+.cyber-glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, rgba(255, 138, 61, 0.4), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out-cubic);
+}
+
+.cyber-glow-border:hover::before {
+  opacity: 1;
 }
 
 /* ----------------------------------------------------------------
-   Reduced motion
+   Reduced motion accessibility
    ---------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -169,5 +248,14 @@ a {
     animation: none !important;
     left: 50% !important;
     opacity: 1 !important;
+  }
+
+  .card-tilt-inner {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  #scroll-progress-beam {
+    display: none !important;
   }
 }

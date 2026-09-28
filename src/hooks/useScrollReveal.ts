@@ -5,14 +5,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 /**
- * Queries all `[data-reveal]` elements inside the given container and
- * animates them in when they enter the viewport.
- *
- * Elements with `data-reveal-stagger` on a parent will have their
- * direct children staggered instead.
- *
- * Under `prefers-reduced-motion` everything is set to its final state
- * immediately — no animations fire.
+ * Standardized Scroll-Reveal Engine adhering to Rich Tabor Motion Guidelines:
+ * - Enter curve: power3.out (cubic-bezier(0.165, 0.84, 0.44, 1) / --ease-out-quart)
+ * - Restrained scale: from scale(0.98) to scale(1) (never scale(0))
+ * - Fast initial acceleration for responsiveness, calm landing
+ * - Strict reduced-motion fallback (instant reveal, zero transform)
  */
 export function useScrollReveal(containerRef: RefObject<HTMLElement | null>) {
   useEffect(() => {
@@ -24,7 +21,6 @@ export function useScrollReveal(containerRef: RefObject<HTMLElement | null>) {
     ).matches
 
     if (prefersReduced) {
-      // Make sure nothing is invisible
       const els = container.querySelectorAll<HTMLElement>('[data-reveal]')
       els.forEach((el) => {
         el.style.opacity = '1'
@@ -42,11 +38,12 @@ export function useScrollReveal(containerRef: RefObject<HTMLElement | null>) {
       singles.forEach((el) => {
         gsap.fromTo(
           el,
-          { y: 40, opacity: 0 },
+          { y: 28, scale: 0.985, opacity: 0 },
           {
             y: 0,
+            scale: 1,
             opacity: 1,
-            duration: 0.9,
+            duration: 0.65,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: el,
@@ -68,16 +65,17 @@ export function useScrollReveal(containerRef: RefObject<HTMLElement | null>) {
 
         gsap.fromTo(
           children,
-          { y: 32, opacity: 0 },
+          { y: 24, scale: 0.985, opacity: 0 },
           {
             y: 0,
+            scale: 1,
             opacity: 1,
-            duration: 0.75,
-            stagger: 0.12,
+            duration: 0.55,
+            stagger: 0.08,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: group,
-              start: 'top 85%',
+              start: 'top 86%',
               toggleActions: 'play none none none',
             },
           },

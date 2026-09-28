@@ -1,76 +1,107 @@
-# Shreyas Mudholkar | Portfolio
+# Shreyas Mudholkar — Enterprise AI & MCP Integration Engineer
 
-A high-performance, single-page React/Vite portfolio built around the visual thesis of routing, signal flow, Model Context Protocol (MCP), SAP, and enterprise AI integration. 
+> **Personal Portfolio & Technical Showcase**  
+> *"Connecting LLMs to the enterprise systems that run the real world."*  
+> **Repository:** [`https://github.com/Shreyas-cpu/my_webpage`](https://github.com/Shreyas-cpu/my_webpage)
 
-The project features a lightweight Canvas 2D interactive hero network, GSAP scroll reveals, Lenis smooth scrolling, and a custom magnetic cursor.
+---
 
-## Run Locally
+## Technical Overview
 
-Make sure you have Node.js installed, then run:
+A high-performance single-page portfolio engineered with **React 19**, **Vite 8**, and **Tailwind CSS v4**, built around the architectural thesis of signal flow, Model Context Protocol (MCP), SAP ERP integrations, and multi-agent AI systems.
+
+### Core Systems & Visual Engineering
+- **Signature Hero Topology**: 2D Canvas routing graph connecting `LLM`, `MCP Gateway`, `SAP BTP`, `OData API`, and `AURUM Engines` with accelerated packet streams, proximity hover resonance, and click shockwaves.
+- **Rich Tabor Motion Tokens**: Calibrated cubic-bezier easing (`--ease-out-quart`, `--ease-in-out-cubic`) and duration scales (`120ms`–`300ms`).
+- **3D Card Perspectives**: Interactive project cards featuring pointer-driven ±5° pitch/yaw tilt, radial glare lighting, and animated circuit pipelines (`APEX → ORACLE → NEXUS → HELIX`).
+- **Dynamic Optical Beam**: Viewport scroll progress indicator tracking reading depth with luminous dual-layer glow.
+- **Context-Aware Magnetic Cursor**: Morphs between default beacon, targeting crosshair reticle, and magnetic snapping pill.
+- **Accessibility Guarantee**: Full graceful degradation for `prefers-reduced-motion: reduce`.
+
+---
+
+## Tech Stack
+
+| Layer | Tools & Libraries |
+| :--- | :--- |
+| **Framework** | React 19, TypeScript, Vite 8 |
+| **Styling** | Tailwind CSS v4 (`@tailwindcss/vite`), custom CSS custom properties |
+| **Motion & Physics** | GSAP 3, ScrollTrigger, Framer Motion 13, Lenis (Smooth Scroll) |
+| **Typography** | `@fontsource/space-grotesk`, `@fontsource/inter`, `@fontsource/jetbrains-mono` |
+| **Deployment** | Vercel SPA routing (`vercel.json`), Netlify, or Cloudflare Pages |
+
+---
+
+## Local Development
+
+Ensure Node.js (v20+) is installed:
 
 ```bash
+# 1. Install dependencies
 npm install
+
+# 2. Start Vite development server
 npm run dev
 ```
 
-Your portfolio will be running at `http://localhost:5173`.
+Visit `http://localhost:5173` in your browser.
 
-## Verify & Build
+---
 
-To run type checking, linting, and generate the static production build:
+## Production Verification & Build
 
 ```bash
+# Lint with oxlint (ultra-fast zero-config linter)
 npm run lint
+
+# Compile TypeScript and bundle static assets
 npm run build
+
+# Preview production build locally
+npm run preview
 ```
 
-The production-ready assets will be output to the `dist/` folder.
+Static production assets will be output to the `dist/` directory.
 
-## Project Structure & Customization
+---
 
-This portfolio is component-driven and all data is separated from the UI for easy updates.
+## Content & Token Customization
 
-### 📝 Where to Update Content
-All textual content, projects, experience, and contact links are stored in standard TypeScript objects.
-- **Profile Data (Name, Contact, Experience, Skills):** `src/content/profile.ts`
-- **Projects Archive:** `src/content/projects.ts`
+1. **Profile Data, Bio & Experience**:  
+   Edit `src/content/profile.ts` to update contact links, education, work experience, or leadership roles.
 
-### 🎨 Where Color & Type Tokens Live
-The design system is managed globally via Tailwind v4 CSS variables.
-- **Tokens:** Edit `src/index.css` to modify the base ink color, paper text color, and the primary signal accent (`#FF8A3D`).
-- **Fonts:** Fonts are self-hosted via `@fontsource`. If you change the font tokens in `src/index.css`, make sure to install and import the corresponding fontsource package.
+2. **Featured Projects & Pipelines**:  
+   Edit `src/content/projects.ts` to add or update case studies, tags, and architectural pipeline nodes.
 
-### 📄 How to Replace the Resume PDF
-The resume PDF is hosted as a static asset.
-To update your resume:
-1. Name your new PDF file `Shreyas_Resume.pdf`.
-2. Replace the existing file at `public/resume/Shreyas_Resume.pdf`.
-3. The "Resume" buttons across the site will automatically download the new file.
+3. **Motion Curves & Color Palette**:  
+   Edit `src/index.css` to tune theme variables:
+   - Primary Signal: `#FF8A3D`
+   - Background Ink: `#0B0E14`
+   - Text Paper: `#EDEFF3`
+   - Easing tokens: `--ease-out-quart`, `--ease-in-out-cubic`
 
-## Deploying to Vercel or Netlify
+4. **Resume Asset**:  
+   Replace `public/resume/Shreyas_Resume.pdf` with any new version; all download buttons across the application update automatically.
 
-This project is a standard Vite static application, making deployment straightforward.
+---
 
-### Vercel
-1. Push your code to a GitHub repository.
-2. Import the project in your Vercel dashboard.
-3. Vercel will automatically detect the Vite framework and configure the build settings.
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
-4. Click Deploy!
+## Deployment Instructions
 
-### Netlify
-1. Push your code to a GitHub repository.
-2. Import the project in your Netlify dashboard.
-3. Use the following build settings:
-   - **Build Command:** `npm run build`
-   - **Publish directory:** `dist`
-4. Click Deploy!
+### Deploy to Vercel (Recommended)
+This repository includes a preconfigured [`vercel.json`](file:///run/media/promethious/Personal/Projects/My_Webpage/vercel.json):
+1. Push code to GitHub: `git push origin main`.
+2. Connect your repository on [Vercel Dashboard](https://vercel.com).
+3. Framework Preset: **Vite**.
+4. Output Directory: **`dist`**.
+5. Build Command: `npm run build`.
 
-## Tech Stack
-- **Framework:** React 19 + Vite + TypeScript
-- **Styling:** Tailwind CSS v4
-- **Animation:** GSAP, ScrollTrigger, Framer Motion
-- **Scroll:** Lenis (Smooth Scrolling)
-- **Typography:** Self-hosted Space Grotesk, Inter, JetBrains Mono
-- **Canvas:** Custom 2D implementation for Hero Network
+### Deploy to Netlify
+1. Connect repository on Netlify.
+2. Build command: `npm run build`.
+3. Publish directory: `dist`.
+
+---
+
+## License & Credits
+Engineered by **Shreyas Mudholkar** (B.Tech CSE, JNEC MGM University).
+All rights reserved.
