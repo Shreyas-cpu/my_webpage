@@ -143,7 +143,7 @@ function App() {
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,14,20,0.1),#0b0e14_90%)]" />
           </div>
 
-          <div className="mx-auto grid w-full max-w-6xl items-center gap-8 py-6 sm:py-10 lg:grid-cols-[1fr_auto]">
+          <div className="mx-auto grid w-full max-w-6xl items-end gap-8 py-6 sm:py-10 lg:grid-cols-[1fr_auto]">
             <div className="flex flex-col justify-center">
               {/* Live System Signal Badge */}
               <div className="flex items-center gap-2" data-reveal>
@@ -203,8 +203,8 @@ function App() {
               </div>
             </div>
 
-            {/* Interactive 3D Droid Companion on the bottom-right of Hero */}
-            <div className="hidden lg:flex justify-end items-center" data-reveal>
+            {/* Interactive 3D Droid Companion positioned down and to the right */}
+            <div className="hidden lg:flex justify-end items-end self-end lg:translate-x-10 xl:translate-x-18 lg:translate-y-12 xl:translate-y-16" data-reveal>
               <HeroDroid />
             </div>
           </div>

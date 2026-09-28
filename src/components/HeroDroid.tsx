@@ -43,7 +43,7 @@ export function HeroDroid() {
   return (
     <div className="relative pointer-events-auto h-[300px] w-[300px] sm:h-[380px] sm:w-[380px] lg:h-[440px] lg:w-[440px]">
       {/* Telemetry Pill */}
-      <div className="absolute -top-3 right-0 z-10 flex items-center gap-2 rounded-full border border-signal/30 bg-ink-soft/90 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-signal shadow-[0_0_12px_rgba(255,138,61,0.15)] backdrop-blur">
+      <div className="absolute bottom-2 right-6 z-10 flex items-center gap-2 rounded-full border border-signal/30 bg-ink-soft/90 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-signal shadow-[0_0_12px_rgba(255,138,61,0.15)] backdrop-blur">
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
