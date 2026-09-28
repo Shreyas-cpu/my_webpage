@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { ContactForm } from './components/ContactForm'
 import { CustomCursor } from './components/CustomCursor'
+import { HeroDroid } from './components/HeroDroid'
 import { HeroNetwork } from './components/HeroNetwork'
 import { MobileNav } from './components/MobileNav'
 import { Preloader } from './components/Preloader'
@@ -142,62 +143,69 @@ function App() {
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,14,20,0.1),#0b0e14_90%)]" />
           </div>
 
-          <div className="mx-auto flex w-full max-w-6xl flex-col justify-center py-6 sm:py-10">
-            {/* Live System Signal Badge */}
-            <div className="flex items-center gap-2" data-reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-signal/30 bg-ink-soft/90 px-3.5 py-1.5 font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-signal shadow-[0_0_15px_rgba(255,138,61,0.1)]">
-                <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
-                </span>
-                <span className="hidden sm:inline">
-                  MCP System Architecture • SAP ERP Gateway • Enterprise AI
-                </span>
-                <span className="sm:hidden">
-                  MCP ARCHITECTURE • SAP ERP • AI
-                </span>
+          <div className="mx-auto grid w-full max-w-6xl items-center gap-8 py-6 sm:py-10 lg:grid-cols-[1fr_auto]">
+            <div className="flex flex-col justify-center">
+              {/* Live System Signal Badge */}
+              <div className="flex items-center gap-2" data-reveal>
+                <div className="inline-flex items-center gap-2 rounded-full border border-signal/30 bg-ink-soft/90 px-3.5 py-1.5 font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-signal shadow-[0_0_15px_rgba(255,138,61,0.1)]">
+                  <span className="relative flex h-2 w-2 shrink-0">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+                  </span>
+                  <span className="hidden sm:inline">
+                    MCP System Architecture • SAP ERP Gateway • Enterprise AI
+                  </span>
+                  <span className="sm:hidden">
+                    MCP ARCHITECTURE • SAP ERP • AI
+                  </span>
+                </div>
+              </div>
+
+              <h1
+                className="mt-5 sm:mt-6 max-w-3xl font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight sm:leading-[0.94] tracking-tight text-paper drop-shadow-[0_4px_24px_rgba(11,14,20,0.85)]"
+                data-reveal
+              >
+                {profileFacts.displayName}
+              </h1>
+
+              <p
+                className="mt-4 sm:mt-6 max-w-2xl font-display text-xl sm:text-2xl lg:text-3xl font-semibold leading-snug text-paper drop-shadow-[0_2px_12px_rgba(11,14,20,0.85)]"
+                data-reveal
+              >
+                {profileFacts.role}
+              </p>
+
+              <p className="mt-3 sm:mt-4 max-w-2xl text-base sm:text-lg leading-7 sm:leading-8 text-muted/90 drop-shadow-[0_2px_10px_rgba(11,14,20,0.85)]" data-reveal>
+                {profileFacts.positioning}
+              </p>
+
+              <div className="mt-7 sm:mt-9 flex flex-wrap items-center gap-3.5" data-reveal>
+                <SignalLink
+                  href="#projects"
+                  variant="primary"
+                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
+                    handleNavClick(e, '#projects')
+                  }
+                >
+                  Explore Projects ↓
+                </SignalLink>
+                <SignalLink href={profileFacts.resumePath}>
+                  Download CV ↗
+                </SignalLink>
+                <SignalLink
+                  href="#contact"
+                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
+                    handleNavClick(e, '#contact')
+                  }
+                >
+                  Contact Me
+                </SignalLink>
               </div>
             </div>
 
-            <h1
-              className="mt-5 sm:mt-6 max-w-5xl font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight sm:leading-[0.94] tracking-tight text-paper drop-shadow-[0_4px_24px_rgba(11,14,20,0.85)]"
-              data-reveal
-            >
-              {profileFacts.displayName}
-            </h1>
-
-            <p
-              className="mt-4 sm:mt-6 max-w-2xl font-display text-xl sm:text-2xl lg:text-3xl font-semibold leading-snug text-paper drop-shadow-[0_2px_12px_rgba(11,14,20,0.85)]"
-              data-reveal
-            >
-              {profileFacts.role}
-            </p>
-
-            <p className="mt-3 sm:mt-4 max-w-2xl text-base sm:text-lg leading-7 sm:leading-8 text-muted/90 drop-shadow-[0_2px_10px_rgba(11,14,20,0.85)]" data-reveal>
-              {profileFacts.positioning}
-            </p>
-
-            <div className="mt-7 sm:mt-9 flex flex-wrap items-center gap-3.5" data-reveal>
-              <SignalLink
-                href="#projects"
-                variant="primary"
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
-                  handleNavClick(e, '#projects')
-                }
-              >
-                Explore Projects ↓
-              </SignalLink>
-              <SignalLink href={profileFacts.resumePath}>
-                Download CV ↗
-              </SignalLink>
-              <SignalLink
-                href="#contact"
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) =>
-                  handleNavClick(e, '#contact')
-                }
-              >
-                Contact Me
-              </SignalLink>
+            {/* Interactive 3D Droid Companion on the bottom-right of Hero */}
+            <div className="hidden lg:flex justify-end items-center" data-reveal>
+              <HeroDroid />
             </div>
           </div>
         </section>
