@@ -203,8 +203,8 @@ function App() {
               </div>
             </div>
 
-            {/* Interactive 3D Droid Companion positioned down and to the right */}
-            <div className="hidden lg:flex justify-end items-end self-end lg:translate-x-10 xl:translate-x-18 lg:translate-y-12 xl:translate-y-16" data-reveal>
+            {/* Interactive 3D Droid Companion positioned lower and to the right */}
+            <div className="hidden lg:flex justify-end items-end self-end lg:translate-x-14 xl:translate-x-24 lg:translate-y-20 xl:translate-y-24" data-reveal>
               <HeroDroid />
             </div>
           </div>
