@@ -7,44 +7,119 @@ interface NodeItem {
   readonly polarity: 'intelligence' | 'enterprise'
 }
 
-// Perimeter-distributed nodes: spreads the network across the outer margins
-// leaving the center-left completely free for foreground typography
+// Comprehensive 24-node tech constellation mesh covering Shreyas's full technical stack
 const nodes: readonly NodeItem[] = [
-  { label: 'LLM Orchestrator', x: 0.08, y: 0.16, polarity: 'intelligence' },
-  { label: 'MCP Core Gateway', x: 0.48, y: 0.10, polarity: 'intelligence' },
-  { label: 'Agent Mesh', x: 0.76, y: 0.13, polarity: 'intelligence' },
-  { label: 'SAP BTP Bus', x: 0.90, y: 0.24, polarity: 'enterprise' },
-  { label: 'OData Service', x: 0.88, y: 0.50, polarity: 'enterprise' },
-  { label: 'Enterprise Dispatch', x: 0.84, y: 0.82, polarity: 'enterprise' },
-  { label: 'State Ledger', x: 0.48, y: 0.88, polarity: 'enterprise' },
-  { label: 'Telemetry Hub', x: 0.08, y: 0.84, polarity: 'intelligence' },
-  { label: 'Context Buffer', x: 0.06, y: 0.50, polarity: 'intelligence' },
+  // 0..4: Top Intelligence & Agent Tier
+  { label: 'Claude / Gemini API', x: 0.07, y: 0.13, polarity: 'intelligence' },
+  { label: 'FastMCP Server', x: 0.26, y: 0.09, polarity: 'intelligence' },
+  { label: 'Model Context Protocol', x: 0.49, y: 0.07, polarity: 'intelligence' },
+  { label: 'LangGraph Agents', x: 0.72, y: 0.10, polarity: 'intelligence' },
+  { label: 'Multi-Agent Mesh', x: 0.91, y: 0.13, polarity: 'intelligence' },
+
+  // 5..8: Right Enterprise & SAP Tier
+  { label: 'SAP BTP Core', x: 0.93, y: 0.27, polarity: 'enterprise' },
+  { label: 'OData Gateway', x: 0.86, y: 0.43, polarity: 'enterprise' },
+  { label: 'SAP MM / SD / FI', x: 0.92, y: 0.58, polarity: 'enterprise' },
+  { label: 'Enterprise ERP', x: 0.82, y: 0.70, polarity: 'enterprise' },
+
+  // 9..15: Mid-Canvas Cross-Domain Matrix
+  { label: 'FastAPI Services', x: 0.65, y: 0.35, polarity: 'enterprise' },
+  { label: 'Vector DB / RAG', x: 0.38, y: 0.22, polarity: 'intelligence' },
+  { label: 'RAG Pipeline', x: 0.18, y: 0.26, polarity: 'intelligence' },
+  { label: 'Context Buffer', x: 0.05, y: 0.39, polarity: 'intelligence' },
+  { label: 'PyTorch & ML', x: 0.12, y: 0.55, polarity: 'intelligence' },
+  { label: 'Vision LLM / OCR', x: 0.30, y: 0.46, polarity: 'intelligence' },
+  { label: 'WebSocket Stream', x: 0.54, y: 0.48, polarity: 'enterprise' },
+
+  // 16..23: Lower Canvas & Systems Tier
+  { label: 'AURUM Engine', x: 0.25, y: 0.68, polarity: 'intelligence' },
+  { label: 'Drone Telemetry', x: 0.07, y: 0.74, polarity: 'intelligence' },
+  { label: 'Linux / Arch', x: 0.14, y: 0.89, polarity: 'enterprise' },
+  { label: 'Docker Engine', x: 0.34, y: 0.87, polarity: 'enterprise' },
+  { label: 'PostgreSQL', x: 0.52, y: 0.84, polarity: 'enterprise' },
+  { label: 'Redis Cache', x: 0.70, y: 0.86, polarity: 'enterprise' },
+  { label: 'TypeScript / React', x: 0.88, y: 0.84, polarity: 'enterprise' },
+  { label: 'State Ledger', x: 0.46, y: 0.66, polarity: 'enterprise' },
 ]
 
 const edges: readonly (readonly [number, number])[] = [
-  [0, 1], // LLM -> MCP Gateway
-  [1, 2], // MCP Gateway -> Agent Mesh
-  [2, 3], // Agent Mesh -> SAP BTP
-  [3, 4], // SAP BTP -> OData Service
-  [4, 5], // OData -> Enterprise Dispatch
-  [5, 6], // Dispatch -> State Ledger
-  [6, 7], // Ledger -> Telemetry Hub
-  [7, 8], // Telemetry -> Context Buffer
-  [8, 0], // Context Buffer -> LLM Orchestrator (perimeter loop)
-  [1, 4], // Internal bus: MCP Gateway -> OData
-  [1, 6], // Internal bus: MCP Gateway -> State Ledger
-  [8, 6], // Bottom cross-bus: Buffer -> Ledger
+  // Top AI Spine
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 4],
+  [0, 11],
+  [1, 10],
+  [2, 10],
+  [2, 9],
+  [3, 9],
+  [4, 5],
+  // Mid-Left Intelligence Cluster
+  [11, 10],
+  [11, 12],
+  [12, 13],
+  [13, 14],
+  [10, 14],
+  // Enterprise & SAP Bus
+  [5, 6],
+  [6, 7],
+  [7, 8],
+  [6, 9],
+  [9, 15],
+  // MCP ↔ Enterprise Core Bridge
+  [2, 6],
+  [10, 15],
+  [14, 15],
+  [14, 23],
+  [15, 23],
+  [15, 6],
+  // Mid to Lower Systems
+  [13, 16],
+  [13, 17],
+  [16, 17],
+  [16, 23],
+  [23, 20],
+  [23, 9],
+  [15, 21],
+  [8, 22],
+  // Bottom Infrastructure Mesh
+  [17, 18],
+  [18, 19],
+  [19, 20],
+  [20, 21],
+  [21, 22],
+  [16, 19],
+  [19, 23],
+  [20, 15],
+  [21, 8],
+  [7, 22],
+  // Diagonal Grid Reinforcements
+  [1, 11],
+  [3, 15],
+  [6, 23],
+  [12, 17],
+  [14, 16],
 ]
 
 const mobileNodes: readonly NodeItem[] = [
-  { label: 'LLM', x: 0.12, y: 0.18, polarity: 'intelligence' },
-  { label: 'MCP Gateway', x: 0.50, y: 0.12, polarity: 'intelligence' },
-  { label: 'SAP BTP', x: 0.88, y: 0.20, polarity: 'enterprise' },
+  { label: 'Claude / Gemini', x: 0.12, y: 0.14, polarity: 'intelligence' },
+  { label: 'Model Context Protocol', x: 0.50, y: 0.10, polarity: 'intelligence' },
+  { label: 'SAP BTP', x: 0.88, y: 0.16, polarity: 'enterprise' },
+  { label: 'FastMCP', x: 0.22, y: 0.44, polarity: 'intelligence' },
+  { label: 'OData Gateway', x: 0.80, y: 0.46, polarity: 'enterprise' },
+  { label: 'Vector DB', x: 0.20, y: 0.82, polarity: 'intelligence' },
+  { label: 'PostgreSQL', x: 0.80, y: 0.82, polarity: 'enterprise' },
 ]
 
 const mobileEdges: readonly (readonly [number, number])[] = [
   [0, 1],
   [1, 2],
+  [0, 3],
+  [1, 4],
+  [2, 4],
+  [3, 5],
+  [4, 6],
+  [5, 6],
 ]
 
 const STAR_COUNT = 32
@@ -194,53 +269,50 @@ export function HeroNetwork() {
         const end = points[to]
         if (!start || !end) return
 
-        const lineProgress = Math.min(Math.max(progress * 1.35 - edgeIndex * 0.06, 0), 1)
+        const lineProgress = Math.min(Math.max(progress * 1.25 - edgeIndex * 0.012, 0), 1)
         const currentX = start.px + (end.px - start.px) * lineProgress
         const currentY = start.py + (end.py - start.py) * lineProgress
 
         const edgeProximity = Math.max(start.proximity, end.proximity)
         const isEnterprise = end.polarity === 'enterprise' || start.polarity === 'enterprise'
 
-        // Wire Bus Line - Subtle & delicate to keep foreground text prominent
+        // Wire Bus Line - Clean, distinguishable cybernetic grid
         context.beginPath()
         context.strokeStyle = edgeProximity > 0.25
-          ? (isEnterprise ? `rgba(0, 240, 255, ${0.25 + edgeProximity * 0.35})` : `rgba(255, 138, 61, ${0.25 + edgeProximity * 0.35})`)
-          : (isEnterprise ? 'rgba(0, 240, 255, 0.08)' : 'rgba(255, 138, 61, 0.08)')
-        context.lineWidth = edgeProximity > 0.25 ? 1.6 : 0.9
+          ? (isEnterprise ? `rgba(0, 240, 255, ${0.35 + edgeProximity * 0.40})` : `rgba(255, 138, 61, ${0.35 + edgeProximity * 0.40})`)
+          : (isEnterprise ? 'rgba(0, 240, 255, 0.11)' : 'rgba(255, 138, 61, 0.11)')
+        context.lineWidth = edgeProximity > 0.25 ? 1.5 : 0.9
         context.moveTo(start.px, start.py)
         context.lineTo(currentX, currentY)
         context.stroke()
 
-        // Fast Data Packets
-        if (lineProgress > 0.8 && !prefersReduced) {
-          const packetOffsets = [0, 0.5]
-          packetOffsets.forEach((offset) => {
-            const travel = (time / 1150 + edgeIndex * 0.20 + offset) % 1
-            const pulseX = start.px + (end.px - start.px) * travel
-            const pulseY = start.py + (end.py - start.py) * travel
+        // Fast Data Packets (Subtle, sleek streams)
+        if (lineProgress > 0.7 && !prefersReduced) {
+          const travel = (time / 1400 + edgeIndex * 0.13) % 1
+          const pulseX = start.px + (end.px - start.px) * travel
+          const pulseY = start.py + (end.py - start.py) * travel
 
-            // Packet glow halo
-            const glowGradient = context.createRadialGradient(pulseX, pulseY, 0, pulseX, pulseY, 6)
-            glowGradient.addColorStop(0, isEnterprise ? `rgba(0, 240, 255, ${0.6 + pulse * 0.2})` : `rgba(255, 138, 61, ${0.6 + pulse * 0.2})`)
-            glowGradient.addColorStop(1, 'transparent')
+          // Packet glow halo
+          const glowGradient = context.createRadialGradient(pulseX, pulseY, 0, pulseX, pulseY, 5)
+          glowGradient.addColorStop(0, isEnterprise ? `rgba(0, 240, 255, ${0.65 + pulse * 0.25})` : `rgba(255, 138, 61, ${0.65 + pulse * 0.25})`)
+          glowGradient.addColorStop(1, 'transparent')
 
-            context.fillStyle = glowGradient
-            context.beginPath()
-            context.arc(pulseX, pulseY, 6, 0, Math.PI * 2)
-            context.fill()
+          context.fillStyle = glowGradient
+          context.beginPath()
+          context.arc(pulseX, pulseY, 5, 0, Math.PI * 2)
+          context.fill()
 
-            // Core packet
-            context.fillStyle = '#ffffff'
-            context.beginPath()
-            context.arc(pulseX, pulseY, mobile ? 1.5 : 2.0, 0, Math.PI * 2)
-            context.fill()
-          })
+          // Core packet
+          context.fillStyle = '#ffffff'
+          context.beginPath()
+          context.arc(pulseX, pulseY, mobile ? 1.2 : 1.6, 0, Math.PI * 2)
+          context.fill()
         }
       })
 
       // 5. Draw Strategic Nodes with Badges
       points.forEach((node, index) => {
-        const nodeProgress = Math.min(Math.max(progress * 1.4 - index * 0.05, 0), 1)
+        const nodeProgress = Math.min(Math.max(progress * 1.3 - index * 0.02, 0), 1)
         const isEnterprise = node.polarity === 'enterprise'
         const baseColor = isEnterprise ? '#00f0ff' : '#ff8a3d'
         const hoverBoost = node.proximity * 4
@@ -249,12 +321,12 @@ export function HeroNetwork() {
         context.beginPath()
         context.strokeStyle = node.isHovered
           ? baseColor
-          : (isEnterprise ? `rgba(0, 240, 255, ${0.16 + node.proximity * 0.35})` : `rgba(255, 138, 61, ${0.16 + node.proximity * 0.35})`)
-        context.lineWidth = node.isHovered ? 2.0 : 0.9
+          : (isEnterprise ? `rgba(0, 240, 255, ${0.18 + node.proximity * 0.35})` : `rgba(255, 138, 61, ${0.18 + node.proximity * 0.35})`)
+        context.lineWidth = node.isHovered ? 1.8 : 0.9
         context.arc(
           node.px,
           node.py,
-          (mobile ? 11 : 14) + pulse * (mobile ? 2 : 3) + hoverBoost,
+          (mobile ? 10 : 13) + pulse * (mobile ? 1.5 : 2.5) + hoverBoost,
           0,
           Math.PI * 2
         )
@@ -264,46 +336,46 @@ export function HeroNetwork() {
         context.beginPath()
         context.fillStyle = node.isHovered
           ? '#ffffff'
-          : (isEnterprise ? 'rgba(0, 240, 255, 0.45)' : 'rgba(255, 138, 61, 0.45)')
+          : (isEnterprise ? 'rgba(0, 240, 255, 0.50)' : 'rgba(255, 138, 61, 0.50)')
         context.arc(
           node.px,
           node.py,
-          (mobile ? 3.5 : 4.5) + nodeProgress * (mobile ? 1.5 : 2),
+          (mobile ? 3.0 : 4.0) + nodeProgress * (mobile ? 1.2 : 1.6),
           0,
           Math.PI * 2
         )
         context.fill()
 
-        // Aura Halo Bloom
+        // Aura Halo Bloom on hover
         if (node.proximity > 0.15) {
-          const aura = context.createRadialGradient(node.px, node.py, 2, node.px, node.py, 32)
-          aura.addColorStop(0, isEnterprise ? `rgba(0, 240, 255, ${node.proximity * 0.4})` : `rgba(255, 138, 61, ${node.proximity * 0.4})`)
+          const aura = context.createRadialGradient(node.px, node.py, 2, node.px, node.py, 28)
+          aura.addColorStop(0, isEnterprise ? `rgba(0, 240, 255, ${node.proximity * 0.35})` : `rgba(255, 138, 61, ${node.proximity * 0.35})`)
           aura.addColorStop(1, 'transparent')
           context.fillStyle = aura
           context.beginPath()
-          context.arc(node.px, node.py, 32, 0, Math.PI * 2)
+          context.arc(node.px, node.py, 28, 0, Math.PI * 2)
           context.fill()
         }
 
         // Crisp Label Pill
-        const fontSize = mobile ? 10 : 11
+        const fontSize = mobile ? 9.5 : 10.5
         context.font = `${node.isHovered ? '600' : '400'} ${fontSize}px JetBrains Mono`
         const textWidth = context.measureText(node.label).width
-        const pillY = node.py - (mobile ? 16 : 22)
+        const pillY = node.py - (mobile ? 14 : 18)
 
         // Pill background badge (semi-transparent, non-distracting)
-        context.fillStyle = node.isHovered ? 'rgba(11, 14, 20, 0.92)' : 'rgba(11, 14, 20, 0.60)'
-        context.strokeStyle = node.isHovered ? baseColor : 'rgba(38, 49, 66, 0.45)'
+        context.fillStyle = node.isHovered ? 'rgba(11, 14, 20, 0.94)' : 'rgba(11, 14, 20, 0.55)'
+        context.strokeStyle = node.isHovered ? baseColor : (isEnterprise ? 'rgba(0, 240, 255, 0.20)' : 'rgba(255, 138, 61, 0.20)')
         context.lineWidth = 1
-        const padX = 7
-        const padY = 3.5
+        const padX = 6
+        const padY = 3
         context.beginPath()
         context.roundRect(node.px - textWidth / 2 - padX, pillY - fontSize + 1, textWidth + padX * 2, fontSize + padY, 4)
         context.fill()
         context.stroke()
 
         // Text label: muted in background, brightens to primary color when hovered
-        context.fillStyle = node.isHovered ? baseColor : 'rgba(237, 239, 243, 0.50)'
+        context.fillStyle = node.isHovered ? baseColor : 'rgba(237, 239, 243, 0.55)'
         context.textAlign = 'center'
         context.fillText(node.label, node.px, pillY)
       })
@@ -330,7 +402,7 @@ export function HeroNetwork() {
   return (
     <canvas
       aria-hidden="true"
-      className="absolute inset-0 h-full w-full opacity-70 transition-opacity duration-300"
+      className="absolute inset-0 h-full w-full opacity-65 hover:opacity-85 transition-opacity duration-300 pointer-events-none sm:pointer-events-auto"
       ref={canvasRef}
     />
   )
