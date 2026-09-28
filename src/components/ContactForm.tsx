@@ -1,5 +1,10 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { profileFacts } from '../content/profile'
+import { ErrorBoundary } from './ErrorBoundary'
+
+const ContactOrbCanvas = lazy(() =>
+  import('./ContactOrbCanvas').then((m) => ({ default: m.ContactOrbCanvas }))
+)
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -75,25 +80,32 @@ export function ContactForm() {
 
   if (status === 'success') {
     return (
-      <div className="flex h-full min-h-[380px] flex-col items-center justify-center border border-signal/40 bg-ink-soft/90 p-8 text-center shadow-[0_0_25px_rgba(255,138,61,0.08)] transition-all duration-500">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-signal bg-signal-soft text-signal shadow-[0_0_15px_rgba(255,138,61,0.25)]">
-          <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
+      <div className="relative overflow-hidden flex h-full min-h-[380px] flex-col items-center justify-center border border-signal/40 bg-ink-soft/85 p-8 text-center shadow-[0_0_35px_rgba(255,138,61,0.15)] transition-all duration-500">
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={null}>
+            <ContactOrbCanvas />
+          </Suspense>
+        </ErrorBoundary>
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-signal bg-signal-soft text-signal shadow-[0_0_15px_rgba(255,138,61,0.25)]">
+            <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <span className="font-mono text-[11px] uppercase tracking-widest text-signal">
+            Transmission Confirmed
+          </span>
+          <h3 className="mt-2 font-display text-2xl font-bold text-paper">Signal Dispatched</h3>
+          <p className="mt-3 max-w-sm font-body text-sm leading-relaxed text-muted">
+            Your message has been routed directly to <span className="text-paper font-mono text-xs">{profileFacts.contact.email}</span>. I will review and respond shortly.
+          </p>
+          <button
+            onClick={() => setStatus('idle')}
+            className="mt-6 border border-line bg-ink/90 px-4 py-2 font-mono text-xs uppercase tracking-wider text-signal transition hover:border-signal hover:text-paper"
+          >
+            Send Another Signal ←
+          </button>
         </div>
-        <span className="font-mono text-[11px] uppercase tracking-widest text-signal">
-          Transmission Confirmed
-        </span>
-        <h3 className="mt-2 font-display text-2xl font-bold text-paper">Signal Dispatched</h3>
-        <p className="mt-3 max-w-sm font-body text-sm leading-relaxed text-muted">
-          Your message has been routed directly to <span className="text-paper font-mono text-xs">{profileFacts.contact.email}</span>. I will review and respond shortly.
-        </p>
-        <button
-          onClick={() => setStatus('idle')}
-          className="mt-6 border border-line bg-ink px-4 py-2 font-mono text-xs uppercase tracking-wider text-signal transition hover:border-signal hover:text-paper"
-        >
-          Send Another Signal ←
-        </button>
       </div>
     )
   }
@@ -103,10 +115,15 @@ export function ContactForm() {
   )}&body=${encodeURIComponent(formData.message || '')}`
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="border border-line/80 bg-ink-soft/80 p-6 sm:p-8 backdrop-blur"
-    >
+    <div className="relative overflow-hidden border border-line/80 bg-ink-soft/80 p-6 sm:p-8 backdrop-blur shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+      {/* 3D Reactive Orb Background */}
+      <ErrorBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <ContactOrbCanvas />
+        </Suspense>
+      </ErrorBoundary>
+
+      <form onSubmit={handleSubmit} className="pointer-events-none relative z-10">
       {/* Honeypot field for bot protection (hidden) */}
       <input
         type="text"
@@ -119,7 +136,7 @@ export function ContactForm() {
       />
 
       <div className="grid gap-6">
-        <div>
+        <div className="pointer-events-auto">
           <div className="mb-2 flex items-center justify-between">
             <label htmlFor="name" className="font-mono text-xs uppercase tracking-normal text-muted">
               Name
@@ -134,12 +151,12 @@ export function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             disabled={status === 'submitting'}
-            className="w-full border-b border-line bg-transparent px-0 py-2.5 font-body text-paper placeholder-muted/40 transition focus:border-signal focus:outline-none disabled:opacity-50"
+            className="w-full border-b border-line/90 bg-ink/40 px-3 py-2.5 font-body text-paper placeholder-muted/40 transition focus:border-signal focus:bg-ink/75 focus:outline-none disabled:opacity-50"
             placeholder="Shreyas Mudholkar"
           />
         </div>
 
-        <div>
+        <div className="pointer-events-auto">
           <div className="mb-2 flex items-center justify-between">
             <label htmlFor="email" className="font-mono text-xs uppercase tracking-normal text-muted">
               Email Address
@@ -154,12 +171,12 @@ export function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             disabled={status === 'submitting'}
-            className="w-full border-b border-line bg-transparent px-0 py-2.5 font-body text-paper placeholder-muted/40 transition focus:border-signal focus:outline-none disabled:opacity-50"
+            className="w-full border-b border-line/90 bg-ink/40 px-3 py-2.5 font-body text-paper placeholder-muted/40 transition focus:border-signal focus:bg-ink/75 focus:outline-none disabled:opacity-50"
             placeholder="shreyasmudholkar12345@gmail.com"
           />
         </div>
 
-        <div>
+        <div className="pointer-events-auto">
           <div className="mb-2 flex items-center justify-between">
             <label htmlFor="message" className="font-mono text-xs uppercase tracking-normal text-muted">
               Message
@@ -174,13 +191,13 @@ export function ContactForm() {
             value={formData.message}
             onChange={handleChange}
             disabled={status === 'submitting'}
-            className="w-full resize-none border-b border-line bg-transparent px-0 py-2.5 font-body text-paper placeholder-muted/40 transition focus:border-signal focus:outline-none disabled:opacity-50"
+            className="w-full resize-none border-b border-line/90 bg-ink/40 px-3 py-2.5 font-body text-paper placeholder-muted/40 transition focus:border-signal focus:bg-ink/75 focus:outline-none disabled:opacity-50"
             placeholder="How can we collaborate or what's on your mind?"
           />
         </div>
 
         {status === 'error' && (
-          <div className="border border-red-500/40 bg-red-950/20 p-4 font-mono text-xs text-red-200">
+          <div className="pointer-events-auto border border-red-500/40 bg-red-950/30 p-4 font-mono text-xs text-red-200">
             <p className="font-semibold text-red-400">Transmission Alert:</p>
             <p className="mt-1 text-muted/90">{errorMessage}</p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -205,7 +222,7 @@ export function ContactForm() {
           type="submit"
           disabled={status === 'submitting'}
           data-magnetic
-          className="group mt-2 inline-flex h-11 w-full items-center justify-between border border-line bg-ink px-5 font-mono text-xs uppercase tracking-normal text-paper transition hover:border-signal hover:text-signal disabled:cursor-not-allowed disabled:opacity-50"
+          className="pointer-events-auto group mt-2 inline-flex h-11 w-full items-center justify-between border border-line bg-ink/90 px-5 font-mono text-xs uppercase tracking-normal text-paper transition hover:border-signal hover:text-signal disabled:cursor-not-allowed disabled:opacity-50 shadow-[0_0_20px_rgba(255,138,61,0.12)]"
         >
           <span className="flex items-center gap-2">
             {status === 'submitting' && (
@@ -224,10 +241,11 @@ export function ContactForm() {
           </svg>
         </button>
 
-        <p className="text-center font-mono text-[10px] tracking-wide text-muted/60">
+        <p className="pointer-events-none text-center font-mono text-[10px] tracking-wide text-muted/60">
           Dispatches directly to {profileFacts.contact.email} • End-to-end verified
         </p>
       </div>
     </form>
+    </div>
   )
 }

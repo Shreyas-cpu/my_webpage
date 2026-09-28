@@ -122,7 +122,7 @@ const mobileEdges: readonly (readonly [number, number])[] = [
   [5, 6],
 ]
 
-const STAR_COUNT = 32
+const STAR_COUNT = 16
 interface Star {
   x: number
   y: number
@@ -144,6 +144,7 @@ export function HeroNetwork() {
     const context = canvas.getContext('2d')
     if (!context) return
 
+    let isVisible = true
     let animationFrame = 0
     let pointerX = 0
     let pointerY = 0
@@ -155,20 +156,21 @@ export function HeroNetwork() {
 
     const isMobile = () => window.innerWidth < 640
 
-    // Subtle background particles
+    // Subtle background particles - optimized count for performance
     const stars: Star[] = Array.from({ length: STAR_COUNT }, (_, i) => ({
       x: Math.random(),
       y: Math.random(),
-      size: Math.random() * 1.4 + 0.5,
+      size: Math.random() * 1.3 + 0.5,
       speedX: (Math.random() - 0.5) * 0.00015,
       speedY: (Math.random() - 0.5) * 0.00015,
-      alpha: Math.random() * 0.20 + 0.08,
+      alpha: Math.random() * 0.18 + 0.06,
       color: i % 2 === 0 ? 'rgba(0, 240, 255, ' : 'rgba(255, 138, 61, ',
     }))
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect()
-      const ratio = Math.min(window.devicePixelRatio || 1, 2)
+      // Clamped DPR (1.5) to prevent GPU shading overload on 2K/4K/Retina displays
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.5)
       width = rect.width
       height = rect.height
       canvas.width = Math.round(width * ratio)
@@ -197,6 +199,21 @@ export function HeroNetwork() {
         color: event.clientX > width / 2 ? '#00f0ff' : '#ff8a3d',
       }
     }
+
+    // Viewport Culling: Pause animation loop when scrolled out of view to free 100% GPU
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting
+        if (isVisible && !prefersReduced && !animationFrame) {
+          animationFrame = window.requestAnimationFrame(draw)
+        } else if (!isVisible && animationFrame) {
+          window.cancelAnimationFrame(animationFrame)
+          animationFrame = 0
+        }
+      },
+      { threshold: 0.05 }
+    )
+    observer.observe(canvas)
 
     const draw = (time = 0) => {
       context.clearRect(0, 0, width, height)
@@ -380,8 +397,10 @@ export function HeroNetwork() {
         context.fillText(node.label, node.px, pillY)
       })
 
-      if (!prefersReduced) {
+      if (!prefersReduced && isVisible) {
         animationFrame = window.requestAnimationFrame(draw)
+      } else {
+        animationFrame = 0
       }
     }
 
@@ -392,6 +411,7 @@ export function HeroNetwork() {
     window.addEventListener('click', handleClick)
 
     return () => {
+      observer.disconnect()
       window.cancelAnimationFrame(animationFrame)
       window.removeEventListener('resize', resize)
       window.removeEventListener('pointermove', handlePointer)
@@ -403,6 +423,7 @@ export function HeroNetwork() {
     <canvas
       aria-hidden="true"
       className="absolute inset-0 h-full w-full opacity-65 hover:opacity-85 transition-opacity duration-300 pointer-events-none sm:pointer-events-auto"
+      style={{ willChange: 'transform', transform: 'translateZ(0)' }}
       ref={canvasRef}
     />
   )

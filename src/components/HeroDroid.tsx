@@ -28,8 +28,27 @@ export function HeroDroid() {
       setLoading(false)
     }
 
+    // Pause WebGL rendering when offscreen to preserve 100% GPU for rest of page
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!app) return
+        try {
+          if (entry.isIntersecting) {
+            app.play()
+          } else {
+            app.stop()
+          }
+        } catch {
+          // safe ignore
+        }
+      },
+      { threshold: 0.05 }
+    )
+    observer.observe(canvas)
+
     return () => {
       active = false
+      observer.disconnect()
       if (app) {
         try {
           app.dispose()
@@ -60,7 +79,7 @@ export function HeroDroid() {
       <canvas
         ref={canvasRef}
         className="h-full w-full cursor-grab active:cursor-grabbing touch-none"
-        style={{ display: 'block', outline: 'none' }}
+        style={{ display: 'block', outline: 'none', willChange: 'transform', transform: 'translateZ(0)' }}
       />
     </div>
   )

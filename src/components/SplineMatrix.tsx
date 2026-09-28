@@ -51,8 +51,27 @@ export function SplineMatrix() {
       if (active) setLoading(false)
     }
 
+    // Viewport Culling: Pause 3D execution when offscreen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!appRef.current) return
+        try {
+          if (entry.isIntersecting) {
+            appRef.current.play()
+          } else {
+            appRef.current.stop()
+          }
+        } catch {
+          // ignore
+        }
+      },
+      { threshold: 0.05 }
+    )
+    observer.observe(canvas)
+
     return () => {
       active = false
+      observer.disconnect()
       if (appRef.current) {
         try {
           appRef.current.dispose()
@@ -165,7 +184,7 @@ export function SplineMatrix() {
           <canvas
             ref={canvasRef}
             className="h-full w-full cursor-crosshair touch-none"
-            style={{ display: 'block', outline: 'none' }}
+            style={{ display: 'block', outline: 'none', willChange: 'transform', transform: 'translateZ(0)' }}
           />
         </div>
       </div>
