@@ -1,11 +1,45 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { useTextScramble } from '../hooks/useTextScramble'
 
 type SectionShellProps = {
   eyebrow: string
   title: string
   id: string
   children: React.ReactNode
+}
+
+function ScrambleHeading({ title }: { title: string }) {
+  const [triggered, setTriggered] = useState(false)
+  const headingRef = useRef<HTMLHeadingElement>(null)
+
+  useEffect(() => {
+    const el = headingRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTriggered(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.2 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  const scrambled = useTextScramble(title, triggered)
+
+  return (
+    <h2
+      className="mt-4 max-w-sm font-display text-3xl font-semibold leading-tight text-paper sm:text-4xl"
+      data-reveal
+      ref={headingRef}
+    >
+      {scrambled}
+    </h2>
+  )
 }
 
 export function SectionShell({ eyebrow, title, id, children }: SectionShellProps) {
@@ -23,15 +57,11 @@ export function SectionShell({ eyebrow, title, id, children }: SectionShellProps
           <p className="font-mono text-xs uppercase tracking-normal text-signal" data-reveal>
             {eyebrow}
           </p>
-          <h2
-            className="mt-4 max-w-sm font-display text-3xl font-semibold leading-tight text-paper sm:text-4xl"
-            data-reveal
-          >
-            {title}
-          </h2>
+          <ScrambleHeading title={title} />
         </div>
         <div data-reveal>{children}</div>
       </div>
     </section>
   )
 }
+

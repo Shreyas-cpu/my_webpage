@@ -16,6 +16,8 @@
   --color-line: #263142;
   --color-signal: #ff8a3d;
   --color-signal-soft: rgb(255 138 61 / 14%);
+  --color-signal-cyan: #00f0ff;
+  --color-signal-cyan-soft: rgb(0 240 255 / 14%);
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -165,7 +167,6 @@ a {
 .card-tilt-inner {
   transform-style: preserve-3d;
   will-change: transform;
-  transition: transform var(--dur-3) var(--ease-out-quart);
 }
 
 .card-glare {
