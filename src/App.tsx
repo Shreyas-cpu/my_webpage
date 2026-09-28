@@ -1,7 +1,7 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, lazy, Suspense } from 'react'
 import { ContactForm } from './components/ContactForm'
 import { CustomCursor } from './components/CustomCursor'
-import { HeroDroid } from './components/HeroDroid'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { HeroNetwork } from './components/HeroNetwork'
 import { MobileNav } from './components/MobileNav'
 import { Preloader } from './components/Preloader'
@@ -9,8 +9,14 @@ import { ProjectCard } from './components/ProjectCard'
 import { SectionDivider } from './components/SectionDivider'
 import { SectionShell } from './components/SectionShell'
 import { SignalLink } from './components/SignalLink'
-import { SplineMatrix } from './components/SplineMatrix'
 import { compactProjects, featuredProjects } from './content/projects'
+
+const HeroDroid = lazy(() =>
+  import('./components/HeroDroid').then((m) => ({ default: m.HeroDroid })),
+)
+const SplineMatrix = lazy(() =>
+  import('./components/SplineMatrix').then((m) => ({ default: m.SplineMatrix })),
+)
 import {
   experience,
   leadership,
@@ -206,7 +212,17 @@ function App() {
 
             {/* Interactive 3D Droid Companion positioned lower and to the right */}
             <div className="hidden lg:flex justify-end items-end self-end lg:translate-x-14 xl:translate-x-24 lg:translate-y-20 xl:translate-y-24" data-reveal>
-              <HeroDroid />
+              <ErrorBoundary fallback={null}>
+                <Suspense
+                  fallback={
+                    <div className="flex h-[300px] w-[300px] sm:h-[380px] sm:w-[380px] lg:h-[440px] lg:w-[440px] items-center justify-center font-mono text-[11px] text-muted">
+                      <span className="animate-pulse">SYNCHRONIZING DROID...</span>
+                    </div>
+                  }
+                >
+                  <HeroDroid />
+                </Suspense>
+              </ErrorBoundary>
             </div>
           </div>
         </section>
@@ -323,7 +339,17 @@ function App() {
 
         {/* ─────────────── INTERACTIVE 3D BUFFER ─────────────── */}
         <SectionDivider />
-        <SplineMatrix />
+        <ErrorBoundary>
+          <Suspense
+            fallback={
+              <div className="flex h-[320px] w-full items-center justify-center font-mono text-xs text-muted">
+                <span className="animate-pulse">LOADING 3D BUFFER...</span>
+              </div>
+            }
+          >
+            <SplineMatrix />
+          </Suspense>
+        </ErrorBoundary>
 
         {/* ─────────────── SKILLS ─────────────── */}
         <SectionDivider />
