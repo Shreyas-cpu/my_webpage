@@ -3,7 +3,7 @@ export const profileFacts = {
   initials: 'SM',
   role: 'AI Systems Integration Engineer / MCP & Enterprise AI Developer',
   positioning: 'Connecting LLMs to the enterprise systems that run the real world.',
-  resumePath: '/resume/Shreyas_Resume.pdf',
+  resumePath: import.meta.env.BASE_URL + 'resume/Shreyas_Resume.pdf',
   about:
     'Final-year B.Tech Computer Science student at Jawaharlal Nehru Engineering College (JNEC), MGM University, Chhatrapati Sambhajinagar (Aurangabad). Currently Software Engineering Intern at Etzel IT Solutions, where he engineered the production SAP-BTP-MCP Gateway. His engineering domain: Model Context Protocol (MCP) systems, multi-agent AI architectures, deterministic enterprise integration, and applied AI platforms.',
   contact: {
